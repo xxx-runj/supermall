@@ -1,24 +1,41 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+
+const Home = () => import("views/home/Home"); //懒加载方式
+const Cart = () => import("views/cart/Cart");
+const Category = () => import("views/category/Category");
+const Profile = () => import("views/profile/Profile");
 
 Vue.use(VueRouter)
 
-  const routes = [
+//解决导航栏重复点击报错的问题
+const routerReplace = Router.prototype.replace;
+Router.prototype.replace = function replace(location) {
+  return routerReplace.call(this, location).catch(error => error);
+};
+
+const routes = [
   {
-    path: '/',
-    name: 'Home',
+    path: "",
+    redirect: "/home"
+  },
+  {
+    path: "/home",
     component: Home
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: "/cart",
+    component: Cart
+  },
+  {
+    path: "/category",
+    component: Category
+  },
+  {
+    path: "/profile",
+    component: Profile
   }
-]
+];
 
 const router = new VueRouter({
   mode: 'history',
