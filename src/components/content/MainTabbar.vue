@@ -1,6 +1,6 @@
 <template>
     <tabbar>
-        <tabbar-item link="/home" activeColor="red">
+        <tabbar-item link="/home" >
             <template v-slot:item-icon>
                 <img src="~assets/img/tabbar/home.svg" alt="" />
             </template>

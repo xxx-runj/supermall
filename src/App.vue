@@ -7,9 +7,12 @@
 
 <script>
 import MainTabbar from "components/content/MainTabbar"
+
 export default {
   name: "App",
-  components: {}
+  components:{
+    MainTabbar
+  }
 }
 </script>
 

@@ -9,8 +9,8 @@ const Profile = () => import("views/profile/Profile");
 Vue.use(VueRouter)
 
 //解决导航栏重复点击报错的问题
-const routerReplace = Router.prototype.replace;
-Router.prototype.replace = function replace(location) {
+const routerReplace = VueRouter.prototype.replace;
+VueRouter.prototype.replace = function replace(location) {
   return routerReplace.call(this, location).catch(error => error);
 };
 
