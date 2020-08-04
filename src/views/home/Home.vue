@@ -82,6 +82,7 @@ export default {
       tabOffsetTop: 0,  //为了实现吸顶效果设置的变量
       isTabFixed: false,  //决定uptab-control是否显示
       isLoad: false, //节流阀
+      saveY: 0,
     }
   },
   //组件创建好即可发送数据请求
@@ -110,6 +111,18 @@ export default {
       refresh();
     })
   },
+
+  activated() {
+    this.$refs.scroll.refreshScroll();//先刷新再滚动，避免出现小bug
+    this.$refs.scroll.scrollTo(0, this.saveY, 0);
+    
+  },
+  //Home离开时记录位置和状态
+  deactivated() {
+    //console.log(this.$refs.scroll.getScrollY());
+    this.saveY = this.$refs.scroll.getScrollY();
+  },
+
   methods: {
     //   -----------------网络请求相关代码----------------
     //1,请求多个数据(这是异步操作)
@@ -174,11 +187,12 @@ export default {
     },
 
     swiperImageLoad() {
-      //监听轮播图图片加载事件
+      //监听轮播图图片加载事件,使用了节流阀，只要有一张图片加载完成，就获取
       if (!this.isLoad) {
         //  为了实现吸顶效果，获取tab-control的offsetTop
-        //  在mounted中获取这个属性是不正确的，因为图片(异步)可能还没有被加载上去，会影响这个高度
-        // 所有组件都有一个属性是$el，用于获取组件中的元素的
+        //  在mounted中获取这个属性是不正确的，因为轮播图、推荐、本周流行图片(异步)可能还没有被加载上去，会影响这个高度
+        //  高度被影响，就会导致滚动有时滑不动了
+        //  所有组件都有一个属性是$el，用于获取组件中的元素
         this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop;
         this.isLoad = !this.isLoad;
       }

@@ -1,11 +1,13 @@
 <template>
     <div class="goods">
         <!-- 根据goods里的个数，决定遍历多少次item -->
-        <goods-list-item
-            v-for="(item, index) in goods"
-            :key="index"
-            :goods-item="item"
-        ></goods-list-item>
+        <slot>
+            <goods-list-item
+                v-for="(item, index) in goods"
+                :key="index"
+                :goods-item="item"
+            ></goods-list-item>
+        </slot>
     </div>
 </template>
 
@@ -29,13 +31,13 @@ export default {
 </script>
 
 <style scoped>
-.goods{
+.goods {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
 }
 
-.goods-list-item{
+.goods-list-item {
     flex: 1;
 }
 </style>

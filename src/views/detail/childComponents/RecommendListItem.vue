@@ -1,11 +1,11 @@
 <template>
-    <div class="goods-item" @click="itemClick">
+    <div class="recommend-item" >
         <!-- 监听每一张图片都加载完成 接着去刷新bette-scroll -->
-        <img :src="goodsItem.show.img" alt="" @load="imgLoad" />
+        <img :src="recommendItem.image" alt="" @load="imgLoad" />
         <div class="item-info">
-            <p>{{ goodsItem.title }}</p>
-            <span class="price">{{ "¥" + goodsItem.price }}</span>
-            <span class="collect">{{ goodsItem.cfav }}</span>
+            <p>{{ recommendItem.title }}</p>
+            <span class="price">{{ "¥" + recommendItem.price }}</span>
+            <span class="collect">{{ recommendItem.cfav }}</span>
             <!--收藏-->
         </div>
     </div>
@@ -13,9 +13,9 @@
 
 <script>
 export default {
-  name: "GoodsListItem",
+  name: "RecommendListItem",
   props: {
-    goodsItem: {
+    recommendItem: {
       type: Object,
       default() {
         return {}
@@ -26,23 +26,23 @@ export default {
     imgLoad() {
       this.$bus.$emit('itemImgLoad')   //通过事件总线把事件发送出去
     },
-    //跳转到详情页
-    itemClick() {
-      this.$router.push("/detail/" + this.goodsItem.iid)  //传递参数
-    }
+    // //跳转到详情页
+    // itemClick() {
+    //   this.$router.push("/detail/" + this.recommendItem.item_id)  //传递参数
+    // }
   }
 
 }
 </script>
 
 <style scoped>
-.goods-item {
+.recommend-item {
     padding-bottom: 40px;
     width: 48%;
     position: relative;
 }
 
-.goods-item img {
+.recommend-item img {
     width: 100%;
     border-radius: 5px;
 }
