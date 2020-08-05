@@ -38,6 +38,8 @@ export default {
   methods: {
     titleItemClick(index) {
       this.currentIndex = index;
+      //将index发送出去，在detail组件实现点击监听
+      this.$emit("titleClick",index);
     },
     backClick(){
         this.$router.back();

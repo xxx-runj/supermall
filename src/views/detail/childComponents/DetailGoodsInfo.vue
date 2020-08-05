@@ -42,6 +42,8 @@ export default {
       if (++this.counter === this.imagesLength) {
         this.$emit('imageLoad')
       }
+      // this.$emit("recImageLoad")
+      // this.$bus.$emit('detailImgLoad')
     }
   },
   watch: {

@@ -1,7 +1,7 @@
 <template>
     <div class="goods-item" @click="itemClick">
         <!-- 监听每一张图片都加载完成 接着去刷新bette-scroll -->
-        <img :src="goodsItem.show.img" alt="" @load="imgLoad" />
+        <img :src="showImage" alt="" @load="imgLoad" />
         <div class="item-info">
             <p>{{ goodsItem.title }}</p>
             <span class="price">{{ "¥" + goodsItem.price }}</span>
@@ -24,11 +24,20 @@ export default {
   },
   methods: {
     imgLoad() {
-      this.$bus.$emit('itemImgLoad')   //通过事件总线把事件发送出去
+      if (this.$route.path.indexOf("/home")) {
+        this.$bus.$emit('homeItemImgLoad')   //通过事件总线把事件发送出去
+      } else if(this.$route.path.indexOf("/detail")){
+        this.$bus.$emit('detailImgLoad')
+      }
     },
     //跳转到详情页
     itemClick() {
       this.$router.push("/detail/" + this.goodsItem.iid)  //传递参数
+    }
+  },
+  computed: {
+    showImage() {
+      return this.goodsItem.image || this.goodsItem.show.img
     }
   }
 

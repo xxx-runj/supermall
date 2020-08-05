@@ -106,8 +106,8 @@ export default {
     //3,监听goodsitem中图片加载完成
     //利用防抖操作，当第一张图片来了以后，等一会儿，看是否下一张图片也来了
     //这样可以几张图片一起刷新，减少压力
-    const refresh = debounce(this.$refs.scroll.refreshScroll, 10)
-    this.$bus.$on('itemImgLoad', () => {
+    const refresh = debounce(this.$refs.scroll.refreshScroll, 10);
+    this.$bus.$on('homeItemImgLoad', () => {
       refresh();
     })
   },
