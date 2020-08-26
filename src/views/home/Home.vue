@@ -49,10 +49,11 @@ import Navbar from "components/common/navbar/Navbar.vue"
 import TabControl from "components/content/tabControl/TabControl.vue"
 import GoodsList from "components/content/goods/GoodsList.vue"
 import Scroll from "components/common/scroll/Scroll.vue"
-import BackTop from "components/content/backTop/BackTop.vue"
+
 
 import { getHomeMultidata, getHomeGoods } from "network/home/home.js"
 import { debounce } from "common/utils.js"
+import { backTopMixin  } from "common/mixin.js"
 
 
 export default {
@@ -65,9 +66,10 @@ export default {
     TabControl,
     GoodsList,
     Scroll,
-    BackTop,
+    // BackTop,
 
   },
+  mixins:[backTopMixin],
   data() {
     return {
       banner: [],
@@ -78,7 +80,7 @@ export default {
         sell: { page: 0, list: [] },
       },
       currentType: 'pop',
-      isShowBackTop: "false",
+      // isShowBackTop: "false",  //混入中有
       tabOffsetTop: 0,  //为了实现吸顶效果设置的变量
       isTabFixed: false,  //决定uptab-control是否显示
       isLoad: false, //节流阀
@@ -159,16 +161,17 @@ export default {
       this.$refs.tabControl1.currentIndex = index;
       this.$refs.tabControl2.currentIndex = index;
     },
-    backClick() {
-      // 拿到scroll组件对象,就可以访问该组件对象里面的数据和方法
-      //this.$refs.scroll拿到scroll组件
-      //this.$refs.scroll.scroll拿到scroll组件里new BScroll()得到的对象
-      //该对象下有一个scrollTo(x坐标，y坐标，时间(多少ms返回顶部))方法
-      //this.$refs.scroll.scroll.scrollTo(0, 0, 500)
+    // 利用了混入，不需要再写一遍了
+    // backClick() {
+    //   // 拿到scroll组件对象,就可以访问该组件对象里面的数据和方法
+    //   //this.$refs.scroll拿到scroll组件
+    //   //this.$refs.scroll.scroll拿到scroll组件里new BScroll()得到的对象
+    //   //该对象下有一个scrollTo(x坐标，y坐标，时间(多少ms返回顶部))方法
+    //   //this.$refs.scroll.scroll.scrollTo(0, 0, 500)
 
-      //这样写是因为在Scroll.vue组件里已经封装了一个scrollTo方法
-      this.$refs.scroll.scrollTo(0, 0, 500);
-    },
+    //   //这样写是因为在Scroll.vue组件里已经封装了一个scrollTo方法
+    //   this.$refs.scroll.scrollTo(0, 0, 500);
+    // },
     // 1，判断backTop是否显示
     scrollLoc(position) {
       //console.log(position)

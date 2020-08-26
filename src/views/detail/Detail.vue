@@ -27,6 +27,8 @@
                 :recommend-list="recommendList"
             ></detail-recommend-info>
         </scroll>
+        <detail-bottom-bar @addCart="addToCart"></detail-bottom-bar>
+        <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
     </div>
 </template>
 
@@ -39,11 +41,15 @@ import DetailGoodsInfo from "./childComponents/DetailGoodsInfo"
 import DetailGoodsParam from "./childComponents/DetailGoodsParam"
 import DetailCommentInfo from "./childComponents/DetailCommentInfo"
 import DetailRecommendInfo from "./childComponents/DetailRecommendInfo"
+import DetailBottomBar from "./childComponents/DetailBottomBar"
 
 import Scroll from "components/common/scroll/Scroll"
+// import Toast from "components/common/toast/Toast"  //改用自定义插件的方式
+
 
 import { getDetail, getRecommend, Goods, Shop, GoodsParam } from 'network/detail.js'
 import { debounce } from "common/utils.js"
+import { backTopMixin } from "common/mixin.js"
 
 export default {
   name: "Detail",
@@ -56,8 +62,10 @@ export default {
     DetailGoodsParam,
     DetailCommentInfo,
     DetailRecommendInfo,
+    DetailBottomBar,
     Scroll,
   },
+  mixins: [backTopMixin],
   data() {
     return {
       iid: null,  //保存当前点击商品组件的id
@@ -161,7 +169,9 @@ export default {
     // 详情页导航与滚动的联动
     scrollwhere(position) {
       // 1，获取y值
+      // console.log(position.y)
       const positionY = -position.y;
+      this.isShowBackTop = position.y < -1000
 
       // 2，positionY和导航每个标题对应界面的offsetTop值进行对比
       // for(let i in this.navTopY)   这里的i是字符串
@@ -182,6 +192,29 @@ export default {
         }
       }
 
+    },
+
+    //监听购物车的点击
+    addToCart() {
+      // 1，获取购物车需要显示的信息
+      const product = {};
+      product.count = 1;
+      product.image = this.topImages[0];
+      product.title = this.goods.title;
+      product.desc = this.goods.desc;
+      product.price = this.goods.realPrice;
+      product.iid = this.iid;
+
+      // 将商品添加到购物车里
+      //通过commit提交到vuex的mutations
+      // addCart的代码里有逻辑判断，所以最好将此方法写在actions里
+      //actions.js里的函数可以返回一个promise对象,因此dispatch之后可以调用then方法
+      //这里调用then是为了实现加入到购物车的弹窗提示
+      this.$store.dispatch("addCart",product).then(res => {
+        //直接利用toast插件中的方法
+        this.$toast.show(res,10000)
+      }); 
+
     }
   }
 }
@@ -197,6 +230,6 @@ export default {
 
 .detail-content {
     overflow: hidden;
-    height: calc(100% - 44px);
+    height: calc(100% - 44px - 40px);
 }
 </style>
